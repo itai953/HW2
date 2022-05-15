@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include "UI.h"
+#include "FileReader.h"
 using std::vector;
 using std::string;
 

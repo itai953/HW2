@@ -6,7 +6,6 @@ int UI::getCommand(){
     string command;
     std::getline(cin,command);
     return parseCommand(command);
-   
 }
 
 

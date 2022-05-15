@@ -2,6 +2,7 @@
 #define FILEREADER_H
 #include <iostream>
 #include <fstream>
+#include "Graph.h"
 using std::ifstream;
 class FileReader {
 public:
