@@ -61,3 +61,12 @@ void MainApp::init(int argc, vector<string>&& argv){
         exit(1);
     }
 } 
+
+
+
+void MainApp::start() {
+        int command;
+        while(command != UI::EXIT){
+            command = userInterface.getCommand();
+        }
+}

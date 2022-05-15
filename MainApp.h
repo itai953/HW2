@@ -12,13 +12,7 @@ private:
 public:
     MainApp(): userInterface() { }
     void init(int argc, vector<string>&& argv);
-    void start() {
-        int command;
-        while(command != UI::EXIT){
-            command = userInterface.getCommand();
-        }
-        
-    }
+    void start();
 
 };
 
