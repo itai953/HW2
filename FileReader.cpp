@@ -37,8 +37,8 @@ void FileReader::parseInputLine(string line, uint vType) {
     ss>>weight;
     if (weight<0){
         throw FileReaderException("negative weight in inputFile"); }
-    Vertex Vsrc = graph.addVertex(src, getSType(src),vType);
-    Vertex Vdest = graph.addVertex(dest, getSType(dest),vType);
+    Vertex& Vsrc = graph.addVertex(src, getSType(src),vType);
+    Vertex&  Vdest = graph.addVertex(dest, getSType(dest),vType);
     graph.addEdge(vType,Vsrc, Vdest, weight);
 }
 

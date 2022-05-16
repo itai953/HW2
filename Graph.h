@@ -21,7 +21,7 @@ public:
     void inbound(string dest,uint vType);
     void uniExpress(string src, string dest,uint vType);
     void multiExpress(string src, string dest);
-    Vertex&& addVertex(string name,uint sType,uint vType);
+    Vertex& addVertex(string name,uint sType,uint vType);
     void addEdge(uint vType,Vertex& _src, Vertex& _dest, uint _weight);
     ostream& print(ostream& out);
 };
