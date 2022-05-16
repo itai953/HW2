@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include "MainApp.h"
 using std::cout;
 using std::cerr;
@@ -8,6 +9,8 @@ int main(int argc, char** argv){
         exit(1); 
     }
     MainApp ma;
-    // ma.init(argc, vector<string>(argv+1,argv+argc));
-    ma.start();
+    ma.init(argc-1, vector<string>(argv+1,argv+argc));
+    // ma.start();
+    
+    return 0;
 }

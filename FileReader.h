@@ -6,13 +6,13 @@
 #include <sstream>
 #include "Graph.h"
 
-typedef unsigned int uint;
+// typedef unsigned int uint;
 using namespace  std;
 class FileReader {
 
 
     enum {BUS=0, TRAM=1, SPRINTER=2, RAIL=3,INTERCITY=4, CENTRAL=5,STAD=6,TRANSIT=7};
-    Graph graph;
+    Graph& graph;
     uint getSType(string& name);
 
     uint getVtype(string& inputSt);

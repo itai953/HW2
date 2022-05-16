@@ -23,6 +23,9 @@ public:
     uint getVType() const {return vehicleType;};
     uint getSType() const{return  stationType;};
     const string& getName()const {return name;};
+    bool operator<(const Vertex& rhs) const {
+        return name < rhs.name;
+    }
 };
 
 #endif

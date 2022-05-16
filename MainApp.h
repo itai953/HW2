@@ -9,9 +9,12 @@ using std::string;
 
 class MainApp {
 private:
-    UI userInterface;    
+    ofstream output;
+    UI userInterface;
+    Graph g;
+    FileReader fr;    
 public:
-    MainApp(): userInterface() { }
+    MainApp():output(), userInterface(),g(),fr(g) { }
     void init(int argc, vector<string>&& argv);
     void start();
 

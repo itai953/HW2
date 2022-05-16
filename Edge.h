@@ -8,16 +8,21 @@ private:
     static unordered_map<uint,uint> transitTimes;
     static unordered_map<uint,uint> stopTimes;
     uint vehicleType;
-    Vertex& src;
-    Vertex& dest;
+    const Vertex& src;
+    const Vertex& dest;
     uint weight;
 
 public:
+    Edge(uint vType, const Vertex& _src, const Vertex& _dest, uint _weight):vehicleType(vType),
+                                                                            src(_src),dest(_dest),weight(_weight){ }
     uint getVType() const{return vehicleType;}
     uint getStopTime(){return stopTimes[vehicleType];}
     uint getWeight() const{return weight;}
-    Vertex& getSrc() const{return src;}
-    Vertex& getDst() const{return dest;}
+    const Vertex& getSrc() const{return src;}
+    const Vertex& getDst() const{return dest;}
+    bool operator<(const Edge& rhs) const {
+        return weight < rhs.weight;
+    }
 
 
 
