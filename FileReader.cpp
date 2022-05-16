@@ -25,20 +25,20 @@ uint FileReader::getVtype(string& inputSt) {
 
 
 void FileReader::parseInputLine(string line, uint vType) {
-    char tab;
+    // char tab;
     string src;
     string dest;
     uint weight;
     stringstream ss(line);
     ss>>src;
-    ss>>tab;
+    // ss>>tab;
     ss>>dest;
-    ss>>tab;
+    // ss>>tab;
     ss>>weight;
     if (weight<0){
         throw FileReaderException("negative weight in inputFile"); }
-    Vertex& Vsrc = graph.addVertex(src, getSType(src),vType);
-    Vertex&  Vdest = graph.addVertex(dest, getSType(dest),vType);
+    const Vertex& Vsrc = graph.addVertex(src, getSType(src),vType);
+    const Vertex& Vdest = graph.addVertex(dest, getSType(dest),vType);
     graph.addEdge(vType,Vsrc, Vdest, weight);
 }
 
