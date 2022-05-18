@@ -25,15 +25,12 @@ uint FileReader::getVtype(string& inputSt) {
 
 
 void FileReader::parseInputLine(string line, uint vType) {
-    // char tab;
     string src;
     string dest;
     uint weight;
     stringstream ss(line);
     ss>>src;
-    // ss>>tab;
     ss>>dest;
-    // ss>>tab;
     ss>>weight;
     if (weight<0){
         throw FileReaderException("negative weight in inputFile"); }
@@ -56,13 +53,6 @@ void FileReader::readInputFile(string &inputSt) {
     }
 }
 
-//void FileReader::readOutputFile(string &outputSt) {
-//    ofstream outputFile(outputSt);
-//    if (!outputFile){
-//
-//    }
-//
-//}
 
 void FileReader::readConfigFile(string &configSt) {
     ifstream configFile(configSt);
