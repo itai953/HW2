@@ -11,10 +11,10 @@ class MainApp {
 private:
     ofstream output;
     UI userInterface;
-    Graph g;
+    Graph g,gT;
     FileReader fr;    
 public:
-    MainApp():output(), userInterface(),g(),fr(g) { }
+    MainApp():output(), userInterface(),g(),gT(),fr(g,gT) { }
     void init(int argc, vector<string>& argv);
     void start();
 

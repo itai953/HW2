@@ -37,6 +37,12 @@ void FileReader::parseInputLine(string line, uint vType) {
     const Vertex& Vsrc = graph.addVertex(src, getSType(src),vType);
     const Vertex& Vdest = graph.addVertex(dest, getSType(dest),vType);
     graph.addEdge(vType,Vsrc, Vdest, weight);
+
+
+   //add to the transpose graph
+    const Vertex& Vsrc1 = gT.addVertex(src, getSType(src),vType);
+    const Vertex& Vdest1 = gT.addVertex(dest, getSType(dest),vType);
+    gT.addEdge(vType,Vdest1,Vsrc1, weight);   
 }
 
 
@@ -44,8 +50,8 @@ void FileReader::parseInputLine(string line, uint vType) {
 void FileReader::readInputFile(string &inputSt) {
     ifstream inputFile(inputSt);
     if (!inputFile){
-       throw 17;}
-      // throw FileReaderException("input file couldn't open"); }
+        throw FileReaderException("input file couldn't open");
+    }
     uint vType = getVtype(inputSt);
 
     string line;

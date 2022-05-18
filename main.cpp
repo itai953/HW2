@@ -11,7 +11,7 @@ int main(int argc, char** argv){
     MainApp ma;
     vector<string> x(argv+1,argv+argc) ;
     ma.init(argc-1,x);
-    // ma.start();
+    ma.start();
     
     return 0;
 }

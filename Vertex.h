@@ -18,7 +18,7 @@ private:
     char vehicleType;
 public:
     enum {BUS=0, TRAM=1, SPRINTER=2, RAIL=3,INTERCITY=4, CENTRAL=5,STAD=6,TRANSIT=7};
-    Vertex(string name,uint sType,uint vType):name(std::move(name)),stationType(sType),vehicleType(vType){
+    Vertex(const string& name,uint sType,uint vType):name(std::move(name)),stationType(sType),vehicleType(vType){
         absName = name+vehicleType;
     }
 //    void updateConfig( uint stType, uint transitTime);

@@ -2,8 +2,11 @@
 #define GRAPH_H
 #include <map>
 #include <set>
+#include <queue>
 #include "Edge.h"
 using std::ostream;
+using std::cout;
+using std::queue;
 
 //todo check about == and comperators for edge and vertex
 class Graph {
@@ -15,12 +18,10 @@ private:
 
     GraphMap graph;
     void outbound(const Vertex& src);
-    void inbound(const Vertex& dest);
 
 public:
     Graph() { }
-    void outbound(string src,uint vType);
-    void inbound(string dest,uint vType);
+    void outbound(const string& src,uint sType);
     void uniExpress(string src, string dest,uint vType);
     void multiExpress(string src, string dest);
     const Vertex& addVertex(string name,uint sType,uint vType);

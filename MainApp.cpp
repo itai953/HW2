@@ -13,10 +13,8 @@ void MainApp::init(int argc, vector<string>& argv){
             while(argv[i] != "-c" && argv[i] != "-o"){
                 try{
                     fr.readInputFile(argv[i]);
-                }//catch(FileReader::FileReaderException &e){
-                catch (int e){
-                    cerr<<e;
-//                    cerr << e.getError();
+                }catch(FileReader::FileReaderException &e){
+                    cerr << e.getError();
                     exit(1);
                 }
                 i++;
@@ -67,5 +65,18 @@ void MainApp::start() {
         int command;
         while(command != UI::EXIT){
             command = userInterface.getCommand();
+            switch(command){
+                case UI::LOAD:
+                    try{
+                        fr.readInputFile(userInterface.getFilePath());
+                    }catch (FileReader::FileReaderException &e){
+                        cerr<<e.getError();
+                    }
+                    break;
+                case UI::OUTBOUND:
+                    string src = userInterface.getSrcNode();
+                    g.outbound(src,fr.getSType(src));
+                    break;
+            }
         }
 }
