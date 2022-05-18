@@ -63,6 +63,7 @@ void MainApp::init(int argc, vector<string>& argv){
 
 void MainApp::start() {
         int command;
+        string src,dest;
         while(command != UI::EXIT){
             command = userInterface.getCommand();
             switch(command){
@@ -74,8 +75,17 @@ void MainApp::start() {
                     }
                     break;
                 case UI::OUTBOUND:
-                    string src = userInterface.getSrcNode();
+                    src = userInterface.getSrcNode();
                     g.outbound(src,fr.getSType(src));
+                    break;
+                case UI::INBOUND:
+                    dest = userInterface.getDestNode();
+                    gT.outbound(dest,fr.getSType(dest));
+                    break;
+                case UI::UNIEXPRESS:
+                    src = userInterface.getSrcNode();
+                    dest = userInterface.getDestNode();
+                    g.uniExpress(src,dest,fr.getSType(src),fr.getSType(dest));
                     break;
             }
         }
