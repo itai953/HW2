@@ -15,7 +15,7 @@ private:
     FileReader fr;    
 public:
     MainApp():output(), userInterface(),g(),fr(g) { }
-    void init(int argc, vector<string>&& argv);
+    void init(int argc, vector<string>& argv);
     void start();
 
 };

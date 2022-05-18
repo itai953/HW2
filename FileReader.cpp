@@ -44,7 +44,8 @@ void FileReader::parseInputLine(string line, uint vType) {
 void FileReader::readInputFile(string &inputSt) {
     ifstream inputFile(inputSt);
     if (!inputFile){
-        throw FileReaderException("input file couldn't open"); }
+       throw 17;}
+      // throw FileReaderException("input file couldn't open"); }
     uint vType = getVtype(inputSt);
 
     string line;

@@ -20,10 +20,10 @@ class FileReader {
 
 public:
     class FileReaderException{
-            string error;
+            string _error;
         public:
-            FileReaderException(string error):error(error){}
-            string& getError(){return error;}
+            FileReaderException(const string error):_error(error){}
+            string& getError(){return _error;}
     };
     FileReader(Graph& graph): graph(graph){}
     void readInputFile(string& input);

@@ -9,7 +9,8 @@ int main(int argc, char** argv){
         exit(1); 
     }
     MainApp ma;
-    ma.init(argc-1, vector<string>(argv+1,argv+argc));
+    vector<string> x(argv+1,argv+argc) ;
+    ma.init(argc-1,x);
     // ma.start();
     
     return 0;

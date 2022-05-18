@@ -6,8 +6,15 @@ const Vertex& Graph::addVertex(string name,uint sType,uint vType){
         return it->first;
     }else{
         graph[v] = EdgeSet();
-        return graph.find(v)->first;
     }
+    for(const auto& item: graph){
+        if(item.first.getName() == v.getName() && !(v == item.first)){
+            addEdge(Vertex::TRANSIT,item.first,graph.find(v)->first,0);
+            addEdge(Vertex::TRANSIT,graph.find(v)->first,item.first,0);
+            break;
+        }
+    }
+    return graph.find(v)->first;
     
 }
 

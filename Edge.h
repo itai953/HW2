@@ -15,12 +15,13 @@ public:
     Edge(uint vType, const Vertex& _src, const Vertex& _dest, uint _weight):vehicleType(vType),
                                                                             src(_src),dest(_dest),weight(_weight){ }
     uint getVType() const{return vehicleType;}
-    uint getStopTime(){return stopTimes[vehicleType];}
+    static uint getStopTime(uint vType){return stopTimes[vType];}
+    static uint getTransitTime(uint sType){return transitTimes[sType];}
     uint getWeight() const{return weight;}
     const Vertex& getSrc() const{return src;}
     const Vertex& getDst() const{return dest;}
     bool operator<(const Edge& rhs) const {
-        return weight < rhs.weight;
+        return dest < rhs.dest;
     }
     static void updateStopTimes(uint vType, uint stopTime){stopTimes[vType] = stopTime;}
     static void updateTransitTimes(uint sType, uint transitTime){transitTimes[sType] = transitTime;}
