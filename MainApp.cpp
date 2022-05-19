@@ -53,9 +53,11 @@ void MainApp::init(int argc, vector<string>& argv){
         Edge::updateStopTimes(Vertex::TRAM, 2);
         Edge::updateStopTimes(Vertex::SPRINTER, 3);
         Edge::updateStopTimes(Vertex::RAIL, 5);
+        Edge::updateStopTimes(Vertex::TRANSIT, 0);
         Edge::updateTransitTimes(Vertex::CENTRAL,10);
         Edge::updateTransitTimes(Vertex::STAD,5);
         Edge::updateTransitTimes(Vertex::INTERCITY,15);
+        Edge::updateTransitTimes(Vertex::TRANSIT,0);
     }
 } 
 
@@ -86,6 +88,11 @@ void MainApp::start() {
                     src = userInterface.getSrcNode();
                     dest = userInterface.getDestNode();
                     g.uniExpress(src,dest,fr.getSType(src),fr.getSType(dest));
+                    break;
+                case UI::MULTIEXPRESS:
+                    src = userInterface.getSrcNode();
+                    dest = userInterface.getDestNode();
+                    g.multiExpress(src,dest);
                     break;
             }
         }

@@ -17,7 +17,7 @@ public:
     uint getVType() const{return vehicleType;}
     static uint getStopTime(uint vType){return stopTimes[vType];}
     static uint getTransitTime(uint sType){return transitTimes[sType];}
-    uint getWeight() const{return weight;}
+    uint getWeight() const;
     const Vertex& getSrc() const{return src;}
     const Vertex& getDst() const{return dest;}
     bool operator<(const Edge& rhs) const {

@@ -44,16 +44,16 @@ void Graph::outbound(const string& src, uint sType){
 
 string Graph::getVtyprStr(uint a){
     switch (a){
-        case 0:
+        case Vertex::BUS:
             return "bus";
             break;
-        case 1:
+        case Vertex::TRAM:
             return "tram";
             break;
-        case 2:
+        case Vertex::SPRINTER:
             return "sprinter";
             break;
-        case 3:
+        case Vertex::RAIL:
             return "rail";
             break;
         default:
@@ -136,8 +136,8 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
                 if(e.getVType() == Vertex::TRANSIT){
                     continue;
                 }
-                if(dist[e.getDst()].first > dist[u].first + weight + stop){
-                    dist[e.getDst()].first = dist[u].first + weight + stop;
+                if(dist[e.getDst()].first > dist[u].first + weight){
+                    dist[e.getDst()].first = dist[u].first + weight;
                     q.push(pair(e.getDst(),dist[e.getDst()].first));
                 }
             }
@@ -150,8 +150,10 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
 }
 
 
-void Graph::removeVertex(const string& name, uint sType, uint vType){
-    auto it = graph.find(Vertex(name,sType,vType));
+
+
+void Graph::removeVertex(const Vertex& v){
+    auto it = graph.find(v);
     if(it != graph.end()){
         graph.erase(it);
     }
@@ -168,5 +170,60 @@ void Graph::removeEdge(uint vType,const Vertex& _src, const Vertex& _dest, uint 
                 return;
             }
         }
+    }
+}
+
+
+void Graph::multiExpress(const string& src,const string& dest){
+    const Vertex& srcVertex = addVertex("src",Vertex::TRANSIT, Vertex::TRANSIT);
+    const Vertex& dstVertex = addVertex("trg",Vertex::TRANSIT, Vertex::TRANSIT);
+    bool found_src = false;
+    bool found_dst = false;
+    for(auto& ver: graph){
+        if(ver.first.getName() == src){
+            addEdge(Vertex::TRANSIT,srcVertex,ver.first,0);
+            found_src = true;
+        }
+        if(ver.first.getName() == dest){
+            addEdge(Vertex::TRANSIT,ver.first,dstVertex,0);
+            found_dst = true;
+        }
+    }
+    if(!found_src || !found_dst){
+        cerr << "\nERROR: unrecognized source or destination name\n";
+        return;
+    }
+    multiExpress(srcVertex,dstVertex);
+    removeVertex(srcVertex);
+    removeVertex(dstVertex);
+}
+
+
+void Graph::multiExpress(const Vertex& src, const Vertex& dest){
+    map<Vertex,uint> distance;
+    for(auto& item : graph){
+        distance[item.first] = INT_MAX;
+    }
+    distance[src] = 0;
+    
+    bool relaxation = true;
+    for(int i=0; i < graph.size() - 1 && relaxation; i++){
+        relaxation = false;
+        for(auto& item : graph){
+            if(distance[item.first] == INT_MAX)
+                continue;
+            auto& es = item.second;
+            for(auto &e: es){
+                if(distance[e.getDst()] > distance[item.first] + e.getWeight()){
+                    distance[e.getDst()] = distance[item.first] + e.getWeight();
+                    relaxation = true;
+                }
+            }
+        }
+    }
+    if(distance[dest] == INT_MAX){
+        cout << "no available routes\n";
+    }else {
+        cout << "shortest route duration: " << distance[dest] << "\n";
     }
 }
