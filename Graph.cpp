@@ -24,12 +24,12 @@ void Graph::addEdge(uint vType,const Vertex& _src,const Vertex& _dest, uint _wei
     //todo insert check _src and _dest exist in map
     GraphMap::iterator it = graph.find(_src);
     EdgeSet& es = it->second;
-    EdgeSet::iterator sIter = es.find(e);
+    EdgeSet::iterator sIter = std::find(es.begin(),es.end(),e);
     if(sIter == es.end()){
-        es.insert(e);
+        es.insert(es.begin(),e);
     }else if(sIter->getWeight() > _weight) {
         es.erase(sIter);
-        es.insert(e);
+        es.insert(es.begin(),e);
     }
 }
 
@@ -153,16 +153,21 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
 
 void Graph::removeVertex(const Vertex& v){
     auto it = graph.find(v);
-    if(it != graph.end()){
-        graph.erase(it);
-    }
+
+    vector<Edge> xx;
     for(auto& item: graph){
         auto& es = item.second;
         for(auto& e : es){
             if(e.getDst() == v){
-                es.erase(e);
+                xx.push_back(e);
+               // es.remove(e);
             }
         }
+        for(auto& x: xx){es.remove(x);}
+        xx.clear();
+    }
+    if(it != graph.end()){
+        graph.erase(it);
     }
 }
 
@@ -173,7 +178,7 @@ void Graph::removeEdge(uint vType,const Vertex& _src, const Vertex& _dest, uint 
         auto es = it->second;
         for(const auto& e: es){
             if(e.getDst() == _dest){
-                es.erase(e);
+                es.remove(e);
                 return;
             }
         }

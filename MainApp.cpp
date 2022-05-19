@@ -1,11 +1,24 @@
 #include "MainApp.h"
 
+void MainApp::updateConfigData() {
+    Edge::updateStopTimes(Vertex::BUS, 1);
+    Edge::updateStopTimes(Vertex::TRAM, 2);
+    Edge::updateStopTimes(Vertex::SPRINTER, 3);
+    Edge::updateStopTimes(Vertex::RAIL, 5);
+    Edge::updateStopTimes(Vertex::TRANSIT, 0);
+    Edge::updateTransitTimes(Vertex::CENTRAL, 10);
+    Edge::updateTransitTimes(Vertex::STAD, 5);
+    Edge::updateTransitTimes(Vertex::INTERCITY, 15);
+    Edge::updateTransitTimes(Vertex::TRANSIT, 0);
+}
+
 void MainApp::init(int argc, vector<string>& argv){
     vector<string> input;
     string config;
     bool inputFound = false;
     bool configFound = false;
     char flag = 'i';
+    updateConfigData();
     for(int i=0; i < argc;i++){
         if(argv[i] == "-i"){
             inputFound = true;
@@ -21,6 +34,7 @@ void MainApp::init(int argc, vector<string>& argv){
                 if(i >= argc)
                     break;
             }
+        i--;
         }else if(i < argc && argv[i] == "-c"){
             i++;
             configFound = true;
@@ -47,17 +61,6 @@ void MainApp::init(int argc, vector<string>& argv){
     }
     if(!output.is_open()){
         output.open("output.dat");
-    }
-    if(!configFound){
-        Edge::updateStopTimes(Vertex::BUS, 1);
-        Edge::updateStopTimes(Vertex::TRAM, 2);
-        Edge::updateStopTimes(Vertex::SPRINTER, 3);
-        Edge::updateStopTimes(Vertex::RAIL, 5);
-        Edge::updateStopTimes(Vertex::TRANSIT, 0);
-        Edge::updateTransitTimes(Vertex::CENTRAL,10);
-        Edge::updateTransitTimes(Vertex::STAD,5);
-        Edge::updateTransitTimes(Vertex::INTERCITY,15);
-        Edge::updateTransitTimes(Vertex::TRANSIT,0);
     }
 } 
 

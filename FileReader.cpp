@@ -13,7 +13,7 @@ uint FileReader::getVtype(string& inputSt) {
     if(inputSt.rfind("tram",0) ==0){ return TRAM;}
     if(inputSt.rfind("sprinter",0) ==0){ return SPRINTER;}
     if(inputSt.rfind("rail",0) ==0){ return RAIL;}
-    return -1;
+    return 5;
 }
 
 
@@ -60,9 +60,8 @@ void FileReader::readInputFile(string &inputSt) {
 void FileReader::readConfigFile(string &configSt) {
     ifstream configFile(configSt);
     if (!configFile){
-        if (!configFile){
             throw FileReaderException("config file couldn't open"); }
-    }
+
     uint type;
     string token;
     string line;
@@ -74,7 +73,7 @@ void FileReader::readConfigFile(string &configSt) {
         ss>>weight;
         if (weight<0){
             throw FileReaderException("negative weight in config file"); }
-        if (type!=-1){
+        if (type!=5){
             Edge::updateStopTimes(type,weight);
         }
         else{

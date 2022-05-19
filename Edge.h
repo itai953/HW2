@@ -34,13 +34,7 @@ public:
     Edge(uint vType, const Vertex& _src, const Vertex& _dest, uint _weight):vehicleType(vType),
                                                                             src(_src),dest(_dest),weight(_weight){ }
     
-    //big 5 default imps sfficient for class
-    Edge(const Edge&) = default;
-    Edge(Edge&&) = default;
-    Edge& operator=(const Edge&)= default;
-    Edge& operator=(Edge&&) = default;
-    ~Edge() = default;
-    
+
     //static member getters
     static uint getStopTime(uint vType){return stopTimes[vType];}
     static uint getTransitTime(uint sType){return transitTimes[sType];}
@@ -53,14 +47,16 @@ public:
     uint getWeight() const;
     const Vertex& getSrc() const{return src;}
     const Vertex& getDst() const{return dest;}
-    
-    //operator< for use of std::set
-    bool operator<(const Edge& rhs) const {
-        return dest < rhs.dest;
-    }
-    
+    bool operator==(const Edge& other)const{return src == other.src && dest == other.dest && vehicleType == other.vehicleType;}
+
     //weight setter
     void setWeight(uint _weight){weight = _weight;}
+};
+template<>
+struct std::hash<Edge>{
+    std:: size_t operator()(const Edge& e)const noexcept{
+        return std::hash<string>{}(e.getSrc().getName() + e.getDst().getName());
+    }
 };
 
 #endif

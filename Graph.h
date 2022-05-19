@@ -1,10 +1,13 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include <map>
-#include <set>
+#include <unordered_set>
 #include <queue>
 #include <vector>
+#include <list>
+#include <algorithm>
 #include "Edge.h"
+
 using std::priority_queue;
 using std::ostream;
 using std::cout;
@@ -25,7 +28,7 @@ using std::endl;
 
 class Graph {
 private:
-    using EdgeSet = std::set<Edge>;
+    using EdgeSet = std::list<Edge>;
     using GraphMap = std::map<Vertex, EdgeSet>;
     GraphMap graph;
     

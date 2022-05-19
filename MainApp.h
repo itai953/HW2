@@ -18,6 +18,7 @@ public:
     void init(int argc, vector<string>& argv);
     //use userInterface to parse users commands and calls relevant functions from g or gT
     void start();
+    void updateConfigData();
 
 
     //big 5
