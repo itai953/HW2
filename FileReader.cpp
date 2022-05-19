@@ -1,9 +1,5 @@
 #include "FileReader.h"
 
-//void FileReader::readConfigFile(string &configFile) {
-//
-//    }
-
 uint FileReader::getSType(string &name) {
     if(name.rfind("IC",0) ==0 || name.rfind("intercity",0) ==0){return INTERCITY;}
     if(name.rfind("CS",0) ==0 || name.rfind("central",0) ==0){return CENTRAL;}

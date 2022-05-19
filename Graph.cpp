@@ -42,7 +42,7 @@ void Graph::outbound(const string& src, uint sType){
     }
 } 
 
-string getVtyprStr(uint a){
+string Graph::getVtyprStr(uint a){
     switch (a){
         case 0:
             return "bus";
@@ -143,12 +143,30 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
             }
             q.pop();
         }
-        if(!dist[dest].second){
-            cout<<" route unavailable\n";
-        }
-        else{
-            cout<< dist[dest].first - stop<<"\n";
-        }
+        if(!dist[dest].second){cout<<" route unavailable\n";}
+        else{cout<< dist[dest].first - stop<<"\n";}
     }
     else{cout<<" route unavailable\n";}
+}
+
+
+void Graph::removeVertex(const string& name, uint sType, uint vType){
+    auto it = graph.find(Vertex(name,sType,vType));
+    if(it != graph.end()){
+        graph.erase(it);
+    }
+}
+
+
+void Graph::removeEdge(uint vType,const Vertex& _src, const Vertex& _dest, uint _weight){
+    auto it = graph.find(_src);
+    if(it != graph.end()){
+        auto es = it->second;
+        for(const auto& e: es){
+            if(e.getDst() == _dest){
+                es.erase(e);
+                return;
+            }
+        }
+    }
 }

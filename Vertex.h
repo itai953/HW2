@@ -11,7 +11,6 @@ typedef unsigned int uint;
 class Vertex{
 
 private:
-//    static unordered_map<uint, uint> transitConfig;
     string name;
     string absName;
     uint stationType;
@@ -21,8 +20,7 @@ public:
     Vertex(const string& name,uint sType,uint vType):name(std::move(name)),stationType(sType),vehicleType(vType){
         absName = name+vehicleType;
     }
-//    void updateConfig( uint stType, uint transitTime);
-   bool operator==(const Vertex& rhs){return this->stationType == rhs.stationType
+   bool operator==(const Vertex& rhs) const {return this->stationType == rhs.stationType
                                                 && this->name == rhs.name
                                                 && this->vehicleType == rhs.vehicleType;}
     uint getVType() const {return vehicleType;};

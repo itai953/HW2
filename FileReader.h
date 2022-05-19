@@ -6,7 +6,6 @@
 #include <sstream>
 #include "Graph.h"
 
-// typedef unsigned int uint;
 using namespace  std;
 class FileReader {
 
