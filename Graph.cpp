@@ -16,7 +16,6 @@ const Vertex& Graph::addVertex(string name,uint sType,uint vType){
         }
     }
     return graph.find(v)->first;
-    
 }
 
 
@@ -63,7 +62,7 @@ string Graph::getVtyprStr(uint a){
 
 void Graph::outbound(const Vertex& src){
     string&& type = getVtyprStr(src.getVType());
-    cout <<"\n" << type << ":"; 
+    cout << type << ": "; 
     if(graph.find(src)!= graph.end()){
         std::map<string,bool> visited;
         queue<Vertex> q;
@@ -157,6 +156,14 @@ void Graph::removeVertex(const Vertex& v){
     if(it != graph.end()){
         graph.erase(it);
     }
+    for(auto& item: graph){
+        auto& es = item.second;
+        for(auto& e : es){
+            if(e.getDst() == v){
+                es.erase(e);
+            }
+        }
+    }
 }
 
 
@@ -227,3 +234,18 @@ void Graph::multiExpress(const Vertex& src, const Vertex& dest){
         cout << "shortest route duration: " << distance[dest] << "\n";
     }
 }
+ ostream& Graph::print(ostream& out){
+     out<<"Neverland public transpot network\n";
+     out<<"-----------\n\tBus\t\n<-----------\n";
+     for(auto&item: graph){
+         if(item.first.getVType() == Vertex::BUS){
+             out<<"station name : "<<item.first.getName()<<endl;
+             out<<"Linked stations: ";
+             for(auto& edge: item.second){
+                 out<<edge.getDst().getName() << " ";
+             }
+         }
+     }
+     return out;
+ }
+
