@@ -46,7 +46,7 @@ public:
     uint getSType() const{return  stationType;};
     const string& getName()const {return name;};
     //operator< for use of std::map compares by name and vehicleType
-    bool operator<(const Vertex& rhs) const;
+    bool operator<(const Vertex& rhs) const{return name+vehicleType < rhs.name+rhs.vehicleType;}
 };
 
 #endif

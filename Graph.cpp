@@ -21,7 +21,7 @@ const Vertex& Graph::addVertex(string name,uint sType,uint vType){
 
 void Graph::addEdge(uint vType,const Vertex& _src,const Vertex& _dest, uint _weight){
     Edge e(vType,_src,_dest,_weight);
-    //TODO insert check _src and _dest exist in map
+    //todo insert check _src and _dest exist in map
     GraphMap::iterator it = graph.find(_src);
     EdgeSet& es = it->second;
     EdgeSet::iterator sIter = es.find(e);
@@ -39,7 +39,7 @@ void Graph::outbound(const string& src, uint sType){
         Vertex v(src,sType,i);
         outbound(v);
     }
-} 
+}
 
 string Graph::getVtyprStr(uint a){
     switch (a){
@@ -62,7 +62,7 @@ string Graph::getVtyprStr(uint a){
 
 void Graph::outbound(const Vertex& src){
     string&& type = getVtyprStr(src.getVType());
-    cout << type << ": "; 
+    cout << type << ": ";
     if(graph.find(src)!= graph.end()){
         std::map<string,bool> visited;
         queue<Vertex> q;
@@ -71,7 +71,7 @@ void Graph::outbound(const Vertex& src){
         while(!q.empty()){
             Vertex& u = q.front();
             if(!first){
-                cout<< " " << u.getName();  
+                cout<< " " << u.getName();
             }
             first = false;
             visited[u.getName()] = true;
@@ -85,7 +85,7 @@ void Graph::outbound(const Vertex& src){
             q.pop();
         }
     }else{
-        cout << "no available routes\n"; 
+        cout << "no available routes\n";
     }
 }
 
@@ -122,7 +122,7 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
         dist[src].second = false;
         while(!q.empty()){
             Vertex u = q.top().first;
-            
+
             if(dist[u].second){
                 q.pop();
                 continue;
@@ -212,7 +212,7 @@ void Graph::multiExpress(const Vertex& src, const Vertex& dest){
         distance[item.first] = INT_MAX;
     }
     distance[src] = 0;
-    
+
     bool relaxation = true;
     for(int i=0; i < graph.size() - 1 && relaxation; i++){
         relaxation = false;
@@ -234,18 +234,58 @@ void Graph::multiExpress(const Vertex& src, const Vertex& dest){
         cout << "shortest route duration: " << distance[dest] << "\n";
     }
 }
- ostream& Graph::print(ostream& out){
-     out<<"Neverland public transpot network\n";
-     out<<"-----------\n\tBus\t\n<-----------\n";
-     for(auto&item: graph){
-         if(item.first.getVType() == Vertex::BUS){
-             out<<"station name : "<<item.first.getName()<<endl;
-             out<<"Linked stations: ";
-             for(auto& edge: item.second){
-                 out<<edge.getDst().getName() << " ";
-             }
-         }
-     }
-     return out;
- }
+
+ostream &Graph::print(ostream &out) {
+    out << "Neverland Public Transpot Network\n";
+    out << "\n-------------------Bus-------------------------\n";
+    string n;
+    for (auto &item: graph) {
+        if (item.first.getVType() == Vertex::BUS) {
+            out <<n<< "station name : "<< item.first.getName() << "\nLinked stations >> ";
+            n="\n\n";
+            for (auto &edge: item.second) {
+                if (edge.getVType()!=Vertex::TRANSIT)
+                out << edge.getDst().getName() << " ";
+            }
+        }
+    }
+    out << "\n\n-------------------Rail-------------------------\n";
+    n="";
+    for (auto &item: graph) {
+        if (item.first.getVType() == Vertex::RAIL) {
+            out <<n<< "station name : "<< item.first.getName()<< "\nLinked stations >> ";
+            n="\n\n";
+            for (auto &edge: item.second) {
+                if (edge.getVType()!=Vertex::TRANSIT)
+                    out << edge.getDst().getName() << " ";
+            }
+        }
+    }
+    out << "\n\n-------------------Tram-------------------------\n";
+    n="";
+    for (auto &item: graph) {
+        if (item.first.getVType() == Vertex::TRAM) {
+            out <<n<< "station name : "<< item.first.getName() << "\nLinked stations >> ";
+            n="\n\n";
+            for (auto &edge: item.second) {
+                if (edge.getVType()!=Vertex::TRANSIT)
+                    out << edge.getDst().getName() << " ";
+            }
+        }
+    }
+    out << "\n-------------------Sprinter-------------------------\n";
+    n="";
+    for (auto &item: graph) {
+        if (item.first.getVType() == Vertex::SPRINTER) {
+            out <<n<< "station name : "<< item.first.getName()<< "\nLinked stations >> ";
+            n="\n\n";
+            for (auto &edge: item.second) {
+                if (edge.getVType()!=Vertex::TRANSIT)
+                    out << edge.getDst().getName() << " ";
+            }
+        }
+    }
+    return out;
+}
+
 

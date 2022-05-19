@@ -61,7 +61,6 @@ public:
     
     //weight setter
     void setWeight(uint _weight){weight = _weight;}
-    //insertor operator for ostream prints the destination name
 };
 
 #endif

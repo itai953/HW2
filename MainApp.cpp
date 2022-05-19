@@ -94,6 +94,9 @@ void MainApp::start() {
                     dest = userInterface.getDestNode();
                     g.multiExpress(src,dest);
                     break;
+                case UI::PRINT:
+                g.print(output);
+                break;
             }
         }
 }

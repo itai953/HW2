@@ -1,0 +1,43 @@
+Neverland public transpot network
+
+-------------------Bus-------------------------
+station name : LagoonNorth
+Linked stations >> LagoonSouth 
+
+station name : LagoonSouth
+Linked stations >> LagoonNorth 
+
+-------------------Rail-------------------------
+station name : LagoonEast
+Linked stations >> LagoonNorth LagoonSouth 
+
+station name : LagoonNorth
+Linked stations >> LagoonEast LagoonWest 
+
+station name : LagoonSouth
+Linked stations >> LagoonEast LagoonWest 
+
+station name : LagoonWest
+Linked stations >> LagoonNorth LagoonSouth 
+
+-------------------Tram-------------------------
+station name : CSPiccaninnyMain
+Linked stations >> NeverlandPlains 
+
+station name : CanibalCove
+Linked stations >> PiccaninnyPlains 
+
+station name : MazeOfRegrets
+Linked stations >> NeverpeakMountain 
+
+station name : NeverlandPlains
+Linked stations >> PixieHollow 
+
+station name : NeverpeakMountain
+Linked stations >> CanibalCove 
+
+station name : Neverseas
+Linked stations >> CSPiccaninnyMain 
+
+station name : PiccaninnyPlains
+Linked stations >> 

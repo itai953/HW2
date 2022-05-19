@@ -45,9 +45,12 @@ int UI::parseCommand(const string& cmd){
             //TODO error handling
         }
         return MULTIEXPRESS;
-    }else if(command == "EXIT"){
+    } else if(command == "print"){
+         return PRINT;
+     }else if(command == "EXIT"){
         return EXIT;
-    }else {
+    }
+     else {
         std::cerr << "ERROR: unrecognized command\n";
         return -1;
     }

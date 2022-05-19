@@ -14,6 +14,9 @@ using std::vector;
 using std::map;
 using std::endl;
 
+//todo delete this
+#define INT_MAX 100000
+
 /* 
  * class Graph represents a public transport System
  * data members:
@@ -27,8 +30,12 @@ private:
     GraphMap graph;
     
     /* private functions for internal use*/
-    void outbound(const Vertex& src); 
+
+    // BFS implementation
+    void outbound(const Vertex& src);
+    // dijkstra implementation
     void uniExpress(const Vertex& src,const Vertex& dest);
+    // Bellman ford implementation
     void multiExpress(const Vertex& src, const Vertex& dest);
     string getVtyprStr(uint a);
 public:
