@@ -5,6 +5,15 @@
 using std::string;
 using std::cout;
 using std::cin;
+
+/* 
+ * class UI handles interaction with user, prompts user for next command and parses it
+ * data members:
+ * filepath - for load command
+ * srcNode - for outbound, uniExpress, multiExpress commands
+ * destNode - for inbound uniExpress, multiExpress commands
+ * big 5: default imps sufficient
+ */
 class UI{
 private:
     //Temporary information fields
@@ -21,7 +30,7 @@ public:
     //ask the user to enter a command and call parseCommand to parse it
     int getCommand();
 
-    //after a command was parse by parseCommand
+    //after a command was parsed by parseCommand
     //those functions return the relevant information which parsed as well
     string& getFilePath(){ return filepath; }
     string& getSrcNode() { return srcNode; }

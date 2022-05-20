@@ -16,6 +16,9 @@ using std::ostream;
  * src: the Source Node
  * dest: the dest Node
  * weight: length of drive in minutes
+ * 
+ * big 5: since src and dest are of type const & copy c'tor, copy assignment, move c'tor, move assignment
+ * all not possible for class Edge, default d'tor sufficient
  */
 class Edge{
 private:
@@ -34,7 +37,7 @@ public:
     Edge(uint vType, const Vertex& _src, const Vertex& _dest, uint _weight):vehicleType(vType),
                                                                             src(_src),dest(_dest),weight(_weight){ }
     
-
+    
     //static member getters
     static uint getStopTime(uint vType){return stopTimes[vType];}
     static uint getTransitTime(uint sType){return transitTimes[sType];}

@@ -17,8 +17,6 @@ using std::vector;
 using std::map;
 using std::endl;
 
-//todo delete this
-#define INT_MAX 100000
 
 /* 
  * class Graph represents a public transport System
@@ -63,6 +61,7 @@ public:
     void multiExpress(const string& src,const string& dest);
     //return true if graph contains vertex v
     bool containsVertex(const Vertex& v){return graph.find(v) != graph.end();}
+    bool containsVertex(const string& v);
     //add vertex to graph (constructs and adds to graph with no neighbors)
     const Vertex& addVertex(string name,uint sType,uint vType);
     //add edge to graph from _src to _dst

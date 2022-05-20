@@ -1,33 +1,32 @@
 #include "Graph.h"
 
 const Vertex& Graph::addVertex(string name,uint sType,uint vType){
-    Vertex v(name,sType,vType);
-    GraphMap::iterator it = graph.find(v);
+    Vertex v(name,sType,vType); //construct Vertex
+    GraphMap::iterator it = graph.find(v); //if already in graph return reference
     if(it != graph.end()){
         return it->first;
-    }else{
+    }else{ //else insert to graph with empty EdgeSet
         graph[v] = EdgeSet();
     }
-    for(const auto& item: graph){
+    for(const auto& item: graph){ //add transit Edges
         if(item.first.getName() == v.getName() && !(v == item.first)){
             addEdge(Vertex::TRANSIT,item.first,graph.find(v)->first,0);
             addEdge(Vertex::TRANSIT,graph.find(v)->first,item.first,0);
             break;
         }
     }
-    return graph.find(v)->first;
+    return graph.find(v)->first; //return reference to newly constructed v in graph
 }
 
 
 void Graph::addEdge(uint vType,const Vertex& _src,const Vertex& _dest, uint _weight){
     Edge e(vType,_src,_dest,_weight);
-    //todo insert check _src and _dest exist in map
-    GraphMap::iterator it = graph.find(_src);
-    EdgeSet& es = it->second;
-    EdgeSet::iterator sIter = std::find(es.begin(),es.end(),e);
-    if(sIter == es.end()){
+    GraphMap::iterator it = graph.find(_src); //find iterator to _src
+    EdgeSet& es = it->second; //es is _src's neighbor list
+    EdgeSet::iterator sIter = std::find(es.begin(),es.end(),e); //sIter points to e if e in es
+    if(sIter == es.end()){ //if not in es insert new edge
         es.insert(es.begin(),e);
-    }else if(sIter->getWeight() > _weight) {
+    }else if(sIter->getWeight() > _weight) { //if new edge has lighter weight, replace
         es.erase(sIter);
         es.insert(es.begin(),e);
     }
@@ -35,6 +34,10 @@ void Graph::addEdge(uint vType,const Vertex& _src,const Vertex& _dest, uint _wei
 
 
 void Graph::outbound(const string& src, uint sType){
+    if(!containsVertex(src)){
+        cout << src <<" does not exist in the current network\n";
+        return;
+    } //check available routes for each type vehicle
     for(uint i =0; i<4; i++){
         Vertex v(src,sType,i);
         outbound(v);
@@ -63,6 +66,7 @@ string Graph::getVtyprStr(uint a){
 void Graph::outbound(const Vertex& src){
     string&& type = getVtyprStr(src.getVType());
     cout << type << ": ";
+    //start BFS
     if(graph.find(src)!= graph.end()){
         std::map<string,bool> visited;
         queue<Vertex> q;
@@ -84,6 +88,7 @@ void Graph::outbound(const Vertex& src){
             }
             q.pop();
         }
+        cout << "\n";
     }else{
         cout << "no available routes\n";
     }
@@ -91,6 +96,15 @@ void Graph::outbound(const Vertex& src){
 
 
 void Graph::uniExpress(const string& src,const string& dest,uint srcSType,uint destSType){
+    /* check src and dest in graph if not output error message and return */
+    if(!containsVertex(src)){
+        cout << src << " does not exist in the current network\n";
+        return;
+    }if(!containsVertex(dest)){
+        cout << dest <<" dows not exist in the current network\n";
+        return;
+    }
+    //Dijkstra for each type vehicle
     for(uint i =0; i<4; i++){
         Vertex v(src,srcSType,i);
         Vertex u(dest,destSType,i);
@@ -100,22 +114,28 @@ void Graph::uniExpress(const string& src,const string& dest,uint srcSType,uint d
 
 
 void Graph::uniExpress(const Vertex& src,const Vertex& dest){
-    using pair = std::pair<Vertex,uint>;
+    using pair = std::pair<Vertex,uint>; //typedef for pair
     string&& type = getVtyprStr(src.getVType());
-    cout <<"\n" << type << ":";
+    cout <<"\n" << type << ":"; 
+    //start Dijkstra
     if(graph.find(src)!= graph.end()){
+        //comparator lambda
         auto comp = [](std::pair<Vertex,uint>& p1,std::pair<Vertex,uint>& p2){
             return p1.second > p2.second;
         };
+        //init priority queue
         priority_queue<pair,
                 vector<pair>,
                 decltype(comp)> q(comp);
+        /*init distance map, associates vertex with distance from src and boolean
+        changed to true when vertex extracted from q (final distance value)*/
         std::map<Vertex,std::pair<uint,bool>> dist;
         for(const auto& item :graph){
             if(item.first.getVType() == src.getVType()){
-                dist[item.first] = std::make_pair(INT_MAX,false);
+                dist[item.first] = std::make_pair(INT_MAX,false); //init all distances of same type vehicle vertices to INT_MAX
             }
         }
+        //push src to q with distance 0
         uint stop = Edge::getStopTime(src.getVType());
         q.push(std::make_pair(src,0));
         dist[src].first = 0;
@@ -123,12 +143,13 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
         while(!q.empty()){
             Vertex u = q.top().first;
 
-            if(dist[u].second){
+            if(dist[u].second){//if true then u's lightest route already found, skip it
                 q.pop();
                 continue;
-            }else{
+            }else{ //else set it to true
                 dist[u].second = true;
             }
+            //iterate over neighbors and search for relaxations
             for(auto &e : graph[u]){
                 uint weight;
                 weight = e.getWeight();
@@ -136,14 +157,14 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
                     continue;
                 }
                 if(dist[e.getDst()].first > dist[u].first + weight){
-                    dist[e.getDst()].first = dist[u].first + weight;
-                    q.push(pair(e.getDst(),dist[e.getDst()].first));
+                    dist[e.getDst()].first = dist[u].first + weight; //relaxation
+                    q.push(pair(e.getDst(),dist[e.getDst()].first)); //push to q again
                 }
             }
-            q.pop();
+            q.pop(); //finished with u, remove it from q;
         }
-        if(!dist[dest].second){cout<<" route unavailable\n";}
-        else{cout<< dist[dest].first - stop<<"\n";}
+        if(!dist[dest].second){cout<<" route unavailable\n";} //if condition is false, dest never reached
+        else{cout<< dist[dest].first - stop<<"\n";} //subtract stop added in destination
     }
     else{cout<<" route unavailable\n";}
 }
@@ -152,20 +173,21 @@ void Graph::uniExpress(const Vertex& src,const Vertex& dest){
 
 
 void Graph::removeVertex(const Vertex& v){
+    //it points to v if found
     auto it = graph.find(v);
-
-    vector<Edge> xx;
+    vector<Edge> rmEdges; //collect edges to remove that go into v
+    //loop to find all edges going into v and removes then
     for(auto& item: graph){
         auto& es = item.second;
         for(auto& e : es){
             if(e.getDst() == v){
-                xx.push_back(e);
-               // es.remove(e);
+                rmEdges.push_back(e);
             }
         }
-        for(auto& x: xx){es.remove(x);}
-        xx.clear();
+        for(auto& e: rmEdges){es.remove(e);}
+        rmEdges.clear();
     }
+    //if v found in graph, remove it and associated edges goint out of v
     if(it != graph.end()){
         graph.erase(it);
     }
@@ -173,59 +195,77 @@ void Graph::removeVertex(const Vertex& v){
 
 
 void Graph::removeEdge(uint vType,const Vertex& _src, const Vertex& _dest, uint _weight){
+    Edge e(vType,_src,_dest,_weight);
     auto it = graph.find(_src);
     if(it != graph.end()){
         auto es = it->second;
-        for(const auto& e: es){
-            if(e.getDst() == _dest){
-                es.remove(e);
+        auto esIter = es.begin();
+        while(esIter != es.end()){
+            if(esIter->getDst() == _dest ){
+                es.remove(*esIter);
                 return;
             }
+            else esIter++;
         }
     }
 }
 
 
 void Graph::multiExpress(const string& src,const string& dest){
+    /* check if src and dest in graph, if not output error message and return */
+    if(!containsVertex(src)){
+        cout << src <<" does not exist in the current network\n";
+        return;
+    }if(!containsVertex(dest)){
+        cout << dest <<" does not exist in the current network\n";
+        return;
+    }
+    //add source and target Vertices run Bellman Ford from source to target
     const Vertex& srcVertex = addVertex("src",Vertex::TRANSIT, Vertex::TRANSIT);
     const Vertex& dstVertex = addVertex("trg",Vertex::TRANSIT, Vertex::TRANSIT);
     bool found_src = false;
     bool found_dst = false;
     for(auto& ver: graph){
+        //add edges from source Vertex to src Vertices of all types
         if(ver.first.getName() == src){
             addEdge(Vertex::TRANSIT,srcVertex,ver.first,0);
             found_src = true;
         }
+        //add edges from all type vertices dest to target
         if(ver.first.getName() == dest){
             addEdge(Vertex::TRANSIT,ver.first,dstVertex,0);
             found_dst = true;
         }
     }
+    //if not found than error
     if(!found_src || !found_dst){
         cerr << "\nERROR: unrecognized source or destination name\n";
         return;
     }
+    //start Bellman Ford
     multiExpress(srcVertex,dstVertex);
+    //remove source and target from graph
     removeVertex(srcVertex);
     removeVertex(dstVertex);
 }
 
 
 void Graph::multiExpress(const Vertex& src, const Vertex& dest){
-    map<Vertex,uint> distance;
-    for(auto& item : graph){
+    map<Vertex,uint> distance; //map associates vertex with distance
+    for(auto& item : graph){ //init all distances to INT_MAX
         distance[item.first] = INT_MAX;
     }
-    distance[src] = 0;
+    distance[src] = 0; //src distance 0
 
-    bool relaxation = true;
+    bool relaxation = true; //if iterated over all edges and no relaxation found, finished
+    //|V|-1 iterations over all edges
     for(int i=0; i < graph.size() - 1 && relaxation; i++){
         relaxation = false;
-        for(auto& item : graph){
-            if(distance[item.first] == INT_MAX)
+        for(auto& item : graph){ //iterate over vertices
+            if(distance[item.first] == INT_MAX) //if distance INT_MAX no relaxation possible to neighbors, skip
                 continue;
             auto& es = item.second;
-            for(auto &e: es){
+            for(auto &e: es){ //check all neighbors, if relaxation possible than update distance
                 if(distance[e.getDst()] > distance[item.first] + e.getWeight()){
                     distance[e.getDst()] = distance[item.first] + e.getWeight();
                     relaxation = true;
@@ -233,9 +273,9 @@ void Graph::multiExpress(const Vertex& src, const Vertex& dest){
             }
         }
     }
-    if(distance[dest] == INT_MAX){
+    if(distance[dest] == INT_MAX){ //if true then dest not reachable from src
         cout << "no available routes\n";
-    }else {
+    }else { 
         cout << "shortest route duration: " << distance[dest] << "\n";
     }
 }
@@ -293,4 +333,14 @@ ostream &Graph::print(ostream &out) {
     return out;
 }
 
+
+bool Graph::containsVertex(const string& v){
+    auto it = std::find_if(graph.begin(),graph.end(),[v](std::pair<Vertex,EdgeSet>item){
+        return item.first.getName() == v;
+    });
+    if(it != graph.end()){
+        return true;
+    }
+    return false;
+}
 
