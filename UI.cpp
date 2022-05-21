@@ -22,27 +22,31 @@ int UI::parseCommand(const string& cmd){
     }else if(command == "outbound"){
         ss >> srcNode;
         if(srcNode == ""){
-            //TODO error handling
+            cout << "ERROR correct usage is: outbound <station_name>\n";
+            return -1;
         }
         return OUTBOUND;
     }else if(command == "inbound"){
         ss >> destNode;
         if(destNode == ""){
-            //TODO error handling
+            cout << "ERROR correct usage is: inbound <station_name>\n";
+            return -1;
         }
         return INBOUND;
     }else if(command == "uniExpress"){
         ss >> srcNode;
         ss >> destNode;
         if(srcNode == "" || destNode == ""){
-            //TODO error handling
+            cout << "ERROR correct usage is: uniExpress <src_station> <dest_station>\n";
+            return -1;
         }
         return UNIEXPRESS;
     }else if(command == "multiExpress"){
         ss >> srcNode;
         ss >> destNode;
         if(srcNode == "" || destNode == ""){
-            //TODO error handling
+            cout << "ERROR correct usgae is: multiExpress <src_station> <dest_station>\n";
+            return -1;
         }
         return MULTIEXPRESS;
     } else if(command == "print"){
@@ -50,8 +54,16 @@ int UI::parseCommand(const string& cmd){
      }else if(command == "EXIT"){
         return EXIT;
     }
-     else {
-        std::cerr << "ERROR: unrecognized command\n";
+    else {
+        cout << "ERROR: unrecognized command\n";
+        cout << "supported commands are:\n"; 
+        cout << "1. load <filename>\n";
+        cout << "2. outbound <station_name>\n";
+        cout << "3. inbound <station_name>\n";
+        cout << "4. uniExpress <src_station> <dest_station>\n";
+        cout << "5. multiExpress <src_station> <dest_station>\n";
+        cout << "6. print\n";
+        cout << "7. EXIT to terminate program\n";
         return -1;
     }
 }

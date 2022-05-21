@@ -26,21 +26,21 @@ void Graph::addEdge(uint vType,const Vertex& _src,const Vertex& _dest, uint _wei
     EdgeSet::iterator sIter = std::find(es.begin(),es.end(),e); //sIter points to e if e in es
     if(sIter == es.end()){ //if not in es insert new edge
         es.insert(es.begin(),e);
-    }else if(sIter->getWeight() > _weight) { //if new edge has lighter weight, replace
+    }else if(sIter->getWeight() > _weight) { //if new edge has lighter weight, swap
         es.erase(sIter);
         es.insert(es.begin(),e);
     }
 }
 
 
-void Graph::outbound(const string& src, uint sType){
+void Graph::outbound(const string& src, uint sType,const string& outorin){
     if(!containsVertex(src)){
         cout << src <<" does not exist in the current network\n";
         return;
     } //check available routes for each type vehicle
     for(uint i =0; i<4; i++){
         Vertex v(src,sType,i);
-        outbound(v);
+        outbound(v,outorin);
     }
 }
 
@@ -63,7 +63,7 @@ string Graph::getVtyprStr(uint a){
     }
 }
 
-void Graph::outbound(const Vertex& src){
+void Graph::outbound(const Vertex& src,const string& outorin){
     string&& type = getVtyprStr(src.getVType());
     cout << type << ": ";
     //start BFS
@@ -72,25 +72,26 @@ void Graph::outbound(const Vertex& src){
         queue<Vertex> q;
         q.push(src);
         bool first = true;
+        visited[src.getName()] = true;
         while(!q.empty()){
             Vertex& u = q.front();
             if(!first){
                 cout<< " " << u.getName();
             }
             first = false;
-            visited[u.getName()] = true;
             for(auto & e: graph[u]){
                 if(e.getVType() == Vertex::TRANSIT)
                     continue;
                 if(!visited[e.getDst().getName()]){
                     q.push(e.getDst());
+                    visited[e.getDst().getName()] = true;
                 }
             }
             q.pop();
         }
         cout << "\n";
     }else{
-        cout << "no available routes\n";
+        cout << "no "<< outorin << " travel\n" ;
     }
 }
 
@@ -101,7 +102,7 @@ void Graph::uniExpress(const string& src,const string& dest,uint srcSType,uint d
         cout << src << " does not exist in the current network\n";
         return;
     }if(!containsVertex(dest)){
-        cout << dest <<" dows not exist in the current network\n";
+        cout << dest <<" does not exist in the current network\n";
         return;
     }
     //Dijkstra for each type vehicle
@@ -116,7 +117,7 @@ void Graph::uniExpress(const string& src,const string& dest,uint srcSType,uint d
 void Graph::uniExpress(const Vertex& src,const Vertex& dest){
     using pair = std::pair<Vertex,uint>; //typedef for pair
     string&& type = getVtyprStr(src.getVType());
-    cout <<"\n" << type << ":"; 
+    cout << type << ":"; 
     //start Dijkstra
     if(graph.find(src)!= graph.end()){
         //comparator lambda
@@ -187,7 +188,7 @@ void Graph::removeVertex(const Vertex& v){
         for(auto& e: rmEdges){es.remove(e);}
         rmEdges.clear();
     }
-    //if v found in graph, remove it and associated edges goint out of v
+    //if v found in graph, remove it and associated edges going out of v
     if(it != graph.end()){
         graph.erase(it);
     }
@@ -223,25 +224,17 @@ void Graph::multiExpress(const string& src,const string& dest){
     //add source and target Vertices run Bellman Ford from source to target
     const Vertex& srcVertex = addVertex("src",Vertex::TRANSIT, Vertex::TRANSIT);
     const Vertex& dstVertex = addVertex("trg",Vertex::TRANSIT, Vertex::TRANSIT);
-    bool found_src = false;
-    bool found_dst = false;
     for(auto& ver: graph){
         //add edges from source Vertex to src Vertices of all types
         if(ver.first.getName() == src){
             addEdge(Vertex::TRANSIT,srcVertex,ver.first,0);
-            found_src = true;
         }
         //add edges from all type vertices dest to target
         if(ver.first.getName() == dest){
             addEdge(Vertex::TRANSIT,ver.first,dstVertex,0);
-            found_dst = true;
         }
     }
     //if not found than error
-    if(!found_src || !found_dst){
-        cerr << "\nERROR: unrecognized source or destination name\n";
-        return;
-    }
     //start Bellman Ford
     multiExpress(srcVertex,dstVertex);
     //remove source and target from graph
@@ -274,7 +267,7 @@ void Graph::multiExpress(const Vertex& src, const Vertex& dest){
         }
     }
     if(distance[dest] == INT_MAX){ //if true then dest not reachable from src
-        cout << "no available routes\n";
+        cout << "route unavailable\n";
     }else { 
         cout << "shortest route duration: " << distance[dest] << "\n";
     }

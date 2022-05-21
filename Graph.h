@@ -1,7 +1,6 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include <map>
-#include <unordered_set>
 #include <queue>
 #include <vector>
 #include <list>
@@ -9,7 +8,6 @@
 #include "Edge.h"
 
 using std::priority_queue;
-using std::ostream;
 using std::cout;
 using std::cerr;
 using std::queue;
@@ -33,7 +31,7 @@ private:
     /* private functions for internal use*/
 
     // BFS implementation
-    void outbound(const Vertex& src);
+    void outbound(const Vertex& src,const string& outorin);
     // dijkstra implementation
     void uniExpress(const Vertex& src,const Vertex& dest);
     // Bellman ford implementation
@@ -54,7 +52,7 @@ public:
     
     /*graph queries*/
     //find and print to standard output all stations gettable from vertex with name src
-    void outbound(const string& src,uint sType);
+    void outbound(const string& src,uint sType,const string& outorin);
     //finds and prints to standard output the shortest duration of route from src to dest with no vehicle changes
     void uniExpress(const string& src,const string& dest,uint srcSType,uint destSType);
     //finds and prints to standard output the shortest duration of route from src to dest with vehicle changes

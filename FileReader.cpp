@@ -29,7 +29,7 @@ void FileReader::parseInputLine(string line, uint vType) {
     ss>>dest;
     ss>>weight;
     if (weight<0){
-        throw FileReaderException("negative weight in inputFile"); }
+        throw FileReaderException("negative weight in input file"); }
     const Vertex& Vsrc = graph.addVertex(src, getSType(src),vType);
     const Vertex& Vdest = graph.addVertex(dest, getSType(dest),vType);
     graph.addEdge(vType,Vsrc, Vdest, weight);
@@ -46,7 +46,7 @@ void FileReader::parseInputLine(string line, uint vType) {
 void FileReader::readInputFile(string &inputSt) {
     ifstream inputFile(inputSt);
     if (!inputFile){
-        throw FileReaderException("input file couldn't open");
+        throw FileReaderException("ERROR opening the specified file\n");
     }
     uint vType = getVtype(inputSt);
 
@@ -60,7 +60,7 @@ void FileReader::readInputFile(string &inputSt) {
 void FileReader::readConfigFile(string &configSt) {
     ifstream configFile(configSt);
     if (!configFile){
-            throw FileReaderException("config file couldn't open"); }
+            throw FileReaderException("ERROR opening the specified file\n"); }
 
     uint type;
     string token;

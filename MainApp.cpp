@@ -75,17 +75,18 @@ void MainApp::start() {
                 case UI::LOAD:
                     try{
                         fr.readInputFile(userInterface.getFilePath());
+                        cout << "Update was successful\n";
                     }catch (FileReader::FileReaderException &e){
                         cerr<<e.getError();
                     }
                     break;
                 case UI::OUTBOUND:
                     src = userInterface.getSrcNode();
-                    g.outbound(src,fr.getSType(src));
+                    g.outbound(src,fr.getSType(src),"outbound");
                     break;
                 case UI::INBOUND:
                     dest = userInterface.getDestNode();
-                    gT.outbound(dest,fr.getSType(dest));
+                    gT.outbound(dest,fr.getSType(dest),"inbound");
                     break;
                 case UI::UNIEXPRESS:
                     src = userInterface.getSrcNode();

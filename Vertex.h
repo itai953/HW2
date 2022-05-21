@@ -1,11 +1,8 @@
 #ifndef VERTEX_H
 #define VERTEX_H
 #include <iostream>
-#include <unordered_map>
-#include <utility>
 #include <sstream>
 
-using std::unordered_map;
 using std::string;
 
 /* 

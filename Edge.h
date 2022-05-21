@@ -1,8 +1,9 @@
 #ifndef EDGE_H
 #define EDGE_H
-#include <memory>
+#include <unordered_map>
 #include "Vertex.h"
 using std::ostream;
+using std::unordered_map;
 /* 
  * class Edge represents a direct route between two vertices in transport system
  * static data members:
