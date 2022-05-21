@@ -1,4 +1,4 @@
-# Advanced CPP course HW2
+# Advanced CPP course EX2
 
 Elyashiv Cohen  316534353
 

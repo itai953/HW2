@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include <algorithm>
+#include <bits/stdc++.h>
 #include "Edge.h"
 
 using std::priority_queue;

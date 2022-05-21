@@ -252,7 +252,7 @@ void Graph::multiExpress(const Vertex& src, const Vertex& dest){
 
     bool relaxation = true; //if iterated over all edges and no relaxation found, finished
     //|V|-1 iterations over all edges
-    for(int i=0; i < graph.size() - 1 && relaxation; i++){
+    for(uint i=0; i < graph.size() - 1 && relaxation; i++){
         relaxation = false;
         for(auto& item : graph){ //iterate over vertices
             if(distance[item.first] == INT_MAX) //if distance INT_MAX no relaxation possible to neighbors, skip

@@ -16,8 +16,6 @@ void MainApp::init(int argc, vector<string>& argv){
     vector<string> input;
     string config;
     bool inputFound = false;
-    bool configFound = false;
-    char flag = 'i';
     updateConfigData();
     for(int i=0; i < argc;i++){
         if(argv[i] == "-i"){
@@ -37,7 +35,6 @@ void MainApp::init(int argc, vector<string>& argv){
         i--;
         }else if(i < argc && argv[i] == "-c"){
             i++;
-            configFound = true;
             try{
                 fr.readConfigFile(argv[i]);
             }catch(FileReader::FileReaderException &e){

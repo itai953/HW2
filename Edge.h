@@ -56,11 +56,5 @@ public:
     //weight setter
     void setWeight(uint _weight){weight = _weight;}
 };
-template<>
-struct std::hash<Edge>{
-    std:: size_t operator()(const Edge& e)const noexcept{
-        return std::hash<string>{}(e.getSrc().getName() + e.getDst().getName());
-    }
-};
 
 #endif
